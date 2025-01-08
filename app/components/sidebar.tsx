@@ -1,4 +1,5 @@
 'use client'
+
 import Link from 'next/link'
 import { useState } from 'react'
 import {
@@ -10,24 +11,36 @@ import {
   Database,
   Brain,
   FileSpreadsheet,
-  Type
+  Type,
+  Menu
 } from 'lucide-react'
 
-export function Sidebar() {
+interface LinkItem {
+  title: string;
+  icon: JSX.Element;
+  href: string;
+  tag?: string;
+}
+interface SidebarProps {
+  onLinkClick: (link: { title: string; href: string; tag?: string }) => void
+}
+export function Sidebar({ onLinkClick }: SidebarProps) {
   const [activeLink, setActiveLink] = useState('全部')
 
-  const handleLinkClick = (title) => {
-    setActiveLink(title)
+  const handleLinkClick = (link:LinkItem) => {
+    setActiveLink(link.title)
+    onLinkClick(link)
   }
 
   const links = [
-    { title: '全部', icon: <Home className="h-5 w-5" />, href: '#' },
-    { title: '视频工具', icon: <Video className="h-5 w-5" />, href: '#' },
-    { title: '音频工具', icon: <Music className="h-5 w-5" />, href: '#' },
-    { title: '图片工具', icon: <Image className="h-5 w-5" />, href: '#' },
-    { title: '文档工具', icon: <FileText className="h-5 w-5" />, href: '#' },
-    { title: '数据库工具', icon: <Database className="h-5 w-5" />, href: '#' },
-    { title: 'AI 工具', icon: <Brain className="h-5 w-5" />, href: '#' },
+    { title: '全部', icon: <Home className="h-5 w-5" />, href: '#',tag:'all' },
+    { title: '排行榜', icon: <Menu   className="h-5 w-5" />, href: '#',tag:'all' },
+    { title: '视频工具', icon: <Video className="h-5 w-5" />, href: '#',tag:'video' },
+    { title: '音频工具', icon: <Music className="h-5 w-5" />, href: '#' ,tag:'audio'},
+    { title: '图片工具', icon: <Image className="h-5 w-5" />, href: '#',tag:'image' },
+    { title: '文档工具', icon: <FileText className="h-5 w-5" />, href: '#',tag:'dotument' },
+    { title: '数据库工具', icon: <Database className="h-5 w-5" />, href: '#' ,tag:'all'},
+    { title: 'AI 工具', icon: <Brain className="h-5 w-5" />, href: '#' ,tag:'ai'},
     {
       title: '表格工具',
       icon: <FileSpreadsheet className="h-5 w-5" />,
@@ -51,7 +64,7 @@ export function Sidebar() {
                 ? 'bg-blue-500 text-white'
                 : 'text-white hover:bg-blue-400'
             }`}
-            onClick={() => handleLinkClick(link.title)}
+            onClick={() => handleLinkClick(link)}
           >
             {link.icon}
             {link.title}
