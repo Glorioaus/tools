@@ -1,13 +1,11 @@
-// ToolCardContent.tsx
-'use client'
-import React, { useState } from 'react' 
+import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 interface ToolCardContentProps {
-  // icon: React.ComponentType<{ className?: string }>
   icon: string
   title: string
   description: string
-  url: string,
+  url: string
 }
 
 const ToolCardContent: React.FC<ToolCardContentProps> = ({
@@ -16,25 +14,28 @@ const ToolCardContent: React.FC<ToolCardContentProps> = ({
   description,
   url
 }) => {
-  const [isHovered, setIsHovered] = useState(false) // new state
+  const [isHovered, setIsHovered] = useState(false)
+  const navigate = useNavigate() // 使用 useNavigate 钩子
+
   const handleCardClick = () => {
-    window.open(url, '_blank') // 在新标签页中打开链接
-    // 或者使用 history.push(url) 如果你希望在同一个页面中导航
+    navigate(url) // 使用 navigate 进行路由跳转
   }
 
   return (
     <div
       className="flex flex-col items-center text-center gap-4 transform transition-transform duration-200"
       onClick={handleCardClick}
-      onMouseEnter={() => setIsHovered(true)} // set isHovered to true when mouse enter
-      onMouseLeave={() => setIsHovered(false)} // set isHovered to false when mouse leave
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
-      <div className={`p-3 rounded-lg ${isHovered ? 'scale-110' : ''}`}> {/* use state to control classes */}
-        <img src={`/path/${Icon}`} alt={`Icon for ${title}`} className="w-10 h-10 text-primary" />
-      </div>
-      <div>
-        <h3 className="font-semibold mb-2">{title}</h3>
-        <p className="text-sm text-gray-500">{description}</p>
+      <div className={`p-3 rounded-lg ${isHovered ? 'scale-110' : ''}`}>
+        <img
+          src={`/path/${Icon}`}
+          alt={`Icon for ${title}`}
+          className="w-10 h-10 text-primary"
+        />
+        <h3 className="text-lg font-semibold">{title}</h3>
+        <p className="text-gray-500">{description}</p>
       </div>
     </div>
   )

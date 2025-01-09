@@ -1,6 +1,6 @@
 'use client'
 
-import Link from 'next/link'
+import { Link, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import {
   Home,
@@ -16,37 +16,78 @@ import {
 } from 'lucide-react'
 
 interface LinkItem {
-  title: string;
-  icon: JSX.Element;
-  href: string;
-  tag?: string;
+  title: string
+  icon: JSX.Element
+  href: string
+  tag?: string
 }
 interface SidebarProps {
   onLinkClick: (link: { title: string; href: string; tag?: string }) => void
 }
 export function Sidebar({ onLinkClick }: SidebarProps) {
-  const [activeLink, setActiveLink] = useState('全部')
+  const navigate = useNavigate()
+  const [activeLink, setActiveLink] = useState('')
 
-  const handleLinkClick = (link:LinkItem) => {
+  const handleLinkClick = (link: LinkItem) => {
     setActiveLink(link.title)
     onLinkClick(link)
   }
 
   const links = [
-    { title: '全部', icon: <Home className="h-5 w-5" />, href: '#',tag:'all' },
-    { title: '排行榜', icon: <Menu   className="h-5 w-5" />, href: '#',tag:'all' },
-    { title: '视频工具', icon: <Video className="h-5 w-5" />, href: '#',tag:'video' },
-    { title: '音频工具', icon: <Music className="h-5 w-5" />, href: '#' ,tag:'audio'},
-    { title: '图片工具', icon: <Image className="h-5 w-5" />, href: '#',tag:'image' },
-    { title: '文档工具', icon: <FileText className="h-5 w-5" />, href: '#',tag:'dotument' },
-    { title: '数据库工具', icon: <Database className="h-5 w-5" />, href: '#' ,tag:'all'},
-    { title: 'AI 工具', icon: <Brain className="h-5 w-5" />, href: '#' ,tag:'ai'},
+    {
+      title: '全部',
+      icon: <Home className="h-5 w-5" />,
+      href: '/',
+      tag: 'all'
+    },
+    {
+      title: '排行榜',
+      icon: <Menu className="h-5 w-5" />,
+      href: '/',
+      tag: 'all'
+    },
+    {
+      title: '视频工具',
+      icon: <Video className="h-5 w-5" />,
+      href: '/',
+      tag: 'video'
+    },
+    {
+      title: '音频工具',
+      icon: <Music className="h-5 w-5" />,
+      href: '/',
+      tag: 'audio'
+    },
+    {
+      title: '图片工具',
+      icon: <Image className="h-5 w-5" />,
+      href: '/',
+      tag: 'image'
+    },
+    {
+      title: '文档工具',
+      icon: <FileText className="h-5 w-5" />,
+      href: '/',
+      tag: 'dotument'
+    },
+    {
+      title: '数据库工具',
+      icon: <Database className="h-5 w-5" />,
+      href: '/',
+      tag: 'all'
+    },
+    {
+      title: 'AI 工具',
+      icon: <Brain className="h-5 w-5" />,
+      href: '/',
+      tag: 'ai'
+    },
     {
       title: '表格工具',
       icon: <FileSpreadsheet className="h-5 w-5" />,
-      href: '#'
+      href: '/'
     },
-    { title: '文本工具', icon: <Type className="h-5 w-5" />, href: '#' }
+    { title: '文本工具', icon: <Type className="h-5 w-5" />, href: '/' }
   ]
 
   return (
@@ -58,7 +99,7 @@ export function Sidebar({ onLinkClick }: SidebarProps) {
         {links.map((link) => (
           <Link
             key={link.title}
-            href={link.href}
+            to={link.href}
             className={`flex items-center gap-2 px-4 py-2 rounded-lg ${
               activeLink === link.title
                 ? 'bg-blue-500 text-white'

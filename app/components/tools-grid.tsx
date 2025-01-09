@@ -20,39 +20,48 @@ import {
 import { useEffect, useState } from 'react'
 
 interface LinkItem {
-  title: string;
-  icon: JSX.Element;
-  href: string;
-  tag?: string;
+  title: string
+  icon: JSX.Element
+  href: string
+  tag?: string
 }
 
 interface Tool {
-  icon: any;
-  tag: string;
-  title: string;
-  description: string;
-  url: string;
+  icon: any
+  tag: string
+  title: string
+  description: string
+  url: string
 }
 
 interface ToolsGridProps {
-  selectedLink: LinkItem;
+  selectedLink: LinkItem
 }
 
 const tools: Tool[] = [
   {
     // icon: Video,
-    icon: 'video-icon.webp',
-    tag: 'video',
-    title: 'Video Editing',
-    description: 'Edit and process video files online with various features',
-    url: 'https://sso.sunnyoptical.cn/login?service=https%3A%2F%2Fioa.sunnyoptical.cn%2Fwui%2Fmain.jsp'
+    icon: 'Images.webp',
+    tag: 'image',
+    title: 'CPK计算',
+    description: '上传文件计算CPK',
+    url: '/CPK'
   },
+  // {
+  //   // icon: Video,
+  //   icon: 'video-icon.webp',
+  //   tag: 'video',
+  //   title: 'Video Editing',
+  //   description: 'Edit and process video files online with various features',
+  //   url: 'https://sso.sunnyoptical.cn/login?service=https%3A%2F%2Fioa.sunnyoptical.cn%2Fwui%2Fmain.jsp'
+  // },
   {
     // icon: Stamp,
     icon: 'Stamp.webp',
     tag: 'video',
     title: 'Video Watermark',
-    description: 'Add custom watermarks to your videos with adjustable settings',
+    description:
+      'Add custom watermarks to your videos with adjustable settings',
     url: 'https://sso.sunnyoptical.cn/login?service=https%3A%2F%2Fioa.sunnyoptical.cn%2Fwui%2Fmain.jsp'
   },
   {
@@ -146,15 +155,15 @@ const tools: Tool[] = [
 ]
 
 export function ToolsGrid({ selectedLink }: ToolsGridProps) {
-  const [filteredTools, setFilteredTools] = useState<Tool[]>(tools);
+  const [filteredTools, setFilteredTools] = useState<Tool[]>(tools)
 
   useEffect(() => {
     if (selectedLink.tag === 'all') {
-      setFilteredTools(tools);
+      setFilteredTools(tools)
     } else {
-      setFilteredTools(tools.filter(tool => tool.tag === selectedLink.tag));
+      setFilteredTools(tools.filter((tool) => tool.tag === selectedLink.tag))
     }
-  }, [selectedLink]);
+  }, [selectedLink])
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
