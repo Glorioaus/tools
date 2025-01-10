@@ -11,20 +11,32 @@ const CPK: React.FC = () => {
   const [fileName, setFileName] = useState<string | null>(null)
   // 保存图片
   const [imageUrl, setImageUrl] = useState<string | null>(null)
+  // 保存加载状态
+  const [loading, setLoading] = useState(false)
+
   const handleSendFileName = async () => {
     if (!fileName) {
       message.error('请选择一个文件')
       return
     }
 
-    const result = await sendFileName(fileName)
-    if (result.success) {
-      console.log('文件名称发送成功')
-      const objectUrl = URL.createObjectURL(result.data as Blob)
-      setImageUrl(objectUrl)
-    } else {
-      console.error('文件名称发送失败:', result.error)
+    setLoading(true) // 设置加载状态
+    try {
+      const result = await sendFileName(fileName)
+      if (result.success) {
+        console.log('文件名称发送成功')
+        const objectUrl = URL.createObjectURL(result.data as Blob)
+        setImageUrl(objectUrl)
+        message.success('生成成功')
+      } else {
+        console.error('文件名称发送失败:', result.error)
+        message.error('生成失败')
+      }
+    } catch (error) {
+      console.error('生成失败:', error)
       message.error('生成失败')
+    } finally {
+      setLoading(false) // 清除加载状态
     }
   }
 
@@ -60,6 +72,34 @@ const CPK: React.FC = () => {
       }
       // 返回 false 停止自动上传
       return false
+    },
+    onChange: (info: any) => {
+      const { file, fileList } = info
+      if (file.status === 'done') {
+        // 文件上传成功
+        message.success(`${file.name} 文件上传成功`)
+        setFileUploaded(true)
+        setFileName(file.name)
+      } else if (file.status === 'error') {
+        // 文件上传失败
+        message.error(`${file.name} 文件上传失败`)
+        setFileUploaded(false)
+        setFileName('')
+      } else if (file.status === 'uploading') {
+        // 文件正在上传
+        setLoading(true)
+      } else if (file.status === 'removed') {
+        // 文件被移除
+        setFileUploaded(false)
+        setFileName(null)
+        setImageUrl(null)
+        setLoading(false)
+      }
+
+      // 清除之前的文件列表
+      if (fileList.length >= 1) {
+        fileList.shift() // 移除第一个文件，只保留最新的文件
+      }
     }
   }
 
@@ -70,24 +110,32 @@ const CPK: React.FC = () => {
           <InboxOutlined />
         </p>
         <p className='ant-upload-text'>
-          Click or drag file to this area to upload
+          点击或拖动文件到此区域上传
         </p>
         <p className='ant-upload-hint'>
-          Support for a single or bulk upload. Strictly prohibited from
-          uploading company data or other banned files.
+          单次上传一个EXCEL文件，且最大不能超过20MB
         </p>
         <Button icon={<UploadOutlined />}>点击上传</Button>
       </Dragger>
       {/* "生成"按钮，只有在文件上传成功后才可以使用 */}
-      <Button onClick={handleSendFileName} disabled={!fileUploaded}>
-        生成
-      </Button>
+      <div className="flex items-center justify-between space-y-2.5">
+        <p className="italic md:not-italic">生成文件：{fileName}</p>
+        <Button
+          className='space-y-1.5'
+          onClick={handleSendFileName}
+          disabled={!fileUploaded}
+          loading={loading} // 添加加载状态
+        >
+          生成CPK
+        </Button>
+      </div>
+
       {/* 显示图片 */}
       {imageUrl && (
         <img
           src={imageUrl}
           alt='Generated CPK'
-          style={{ width: '100%', marginTop: '20px' }}
+          className="size-max space-y-2.5"
         />
       )}
     </div>

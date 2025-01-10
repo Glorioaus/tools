@@ -15,14 +15,14 @@ import {
   Menu
 } from 'lucide-react'
 
-interface LinkItem {
+export interface LinkItem {
   title: string
   icon: JSX.Element
   href: string
   tag?: string
 }
 interface SidebarProps {
-  onLinkClick: (link: { title: string; href: string; tag?: string }) => void
+  onLinkClick: (link: LinkItem) => void
 }
 export function Sidebar({ onLinkClick }: SidebarProps) {
   const navigate = useNavigate()

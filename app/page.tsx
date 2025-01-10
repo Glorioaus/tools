@@ -5,6 +5,7 @@ import { useState } from 'react'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 
 import CPK from './components/tools/CPK'
+import { LinkItem } from './components/sidebar'
 
 export default function Page() {
   const [selectedLink, setSelectedLink] = useState<LinkItem>({
