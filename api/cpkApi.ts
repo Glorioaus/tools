@@ -1,4 +1,3 @@
-// e:\sunny-tools-web\api\cpkApi.ts
 import { useState } from 'react'
 
 export const uploadFile = async (file: File) => {
@@ -6,7 +5,7 @@ export const uploadFile = async (file: File) => {
   formData.append('file', file)
 
   try {
-    const response = await fetch('/upload_cpk_xlsx', {
+    const response = await fetch('/cpkapi/upload_cpk_xlsx', {
       method: 'POST',
       body: formData
     })
@@ -27,7 +26,7 @@ export const uploadFile = async (file: File) => {
 
 export const sendFileName = async (fileName: string) => {
   try {
-    const response = await fetch('/cpk', {
+    const response = await fetch('/cpkapi/cpk', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

@@ -7,6 +7,7 @@ try {
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: 'export',
   eslint: {
     ignoreDuringBuilds: true
   },
@@ -22,12 +23,15 @@ const nextConfig = {
     parallelServerCompiles: true
   },
   async rewrites () {
-    return [
-      {
-        source: '/:path*',
-        destination: `${process.env.NEXT_PUBLIC_BACKEND_URL}/:path*` // 代理所有其他请求
-      }
-    ]
+    if (process.env.NODE_ENV === 'development') {
+      return [
+        {
+          source: '/:path*',
+          destination: `${process.env.NEXT_PUBLIC_BACKEND_URL}/:path*` // 代理所有其他请求
+        }
+      ]
+    }
+    return []
   }
 }
 
