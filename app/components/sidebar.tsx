@@ -1,6 +1,6 @@
 'use client'
 
-import { Link, useNavigate } from 'react-router-dom'
+import Link from 'next/link'
 import { useState } from 'react'
 import {
   Home,
@@ -25,7 +25,6 @@ interface SidebarProps {
   onLinkClick: (link: LinkItem) => void
 }
 export function Sidebar({ onLinkClick }: SidebarProps) {
-  const navigate = useNavigate()
   const [activeLink, setActiveLink] = useState('')
 
   const handleLinkClick = (link: LinkItem) => {
@@ -68,7 +67,7 @@ export function Sidebar({ onLinkClick }: SidebarProps) {
       title: '文档工具',
       icon: <FileText className="h-5 w-5" />,
       href: '/',
-      tag: 'dotument'
+      tag: 'document'
     },
     {
       title: '数据库工具',
@@ -99,7 +98,7 @@ export function Sidebar({ onLinkClick }: SidebarProps) {
         {links.map((link) => (
           <Link
             key={link.title}
-            to={link.href}
+            href={link.href}
             className={`flex items-center gap-2 px-4 py-2 rounded-lg ${
               activeLink === link.title
                 ? 'bg-blue-500 text-white'
