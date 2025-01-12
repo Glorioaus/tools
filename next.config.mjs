@@ -8,6 +8,7 @@ try {
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'export',
+  distDir: 'dist',
   eslint: {
     ignoreDuringBuilds: true
   },
@@ -22,16 +23,10 @@ const nextConfig = {
     parallelServerBuildTraces: true,
     parallelServerCompiles: true
   },
-  async rewrites () {
-    if (process.env.NODE_ENV === 'development') {
-      return [
-        {
-          source: '/:path*',
-          destination: `${process.env.NEXT_PUBLIC_BACKEND_URL}/:path*` // 代理所有其他请求
-        }
-      ]
-    }
-    return []
+  env: {
+    BACKEND_URL: process.env.NODE_ENV === 'development'
+      ? 'http://10.199.0.221:5000'
+      : 'http://10.199.0.2232:5000'
   }
 }
 
