@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from 'react'
 import { Upload, message, Button } from 'antd'
 import { InboxOutlined, UploadOutlined } from '@ant-design/icons'

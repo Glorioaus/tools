@@ -20,8 +20,8 @@ interface Tool {
 }
 
 interface ToolsGridProps {
-  selectedLink: LinkItem
-  onLinkClick: (link: LinkItem) => void
+  selectedLink?: LinkItem | null;
+  onLinkClick: (link: LinkItem) => void;
 }
 
 const tools: Tool[] = [
@@ -122,12 +122,14 @@ export function ToolsGrid({ selectedLink, onLinkClick }: ToolsGridProps) {
   const [filteredTools, setFilteredTools] = useState<Tool[]>(tools)
 
   useEffect(() => {
-    if (selectedLink.tag === 'all') {
-      setFilteredTools(tools)
+    if (selectedLink && selectedLink.tag === 'all') {
+      setFilteredTools(tools);
+    } else if (selectedLink) {
+      setFilteredTools(tools.filter((tool) => tool.tag === selectedLink.tag));
     } else {
-      setFilteredTools(tools.filter((tool) => tool.tag === selectedLink.tag))
+      setFilteredTools(tools); // 如果 selectedLink 为 null 或 undefined，默认显示所有工具
     }
-  }, [selectedLink])
+  }, [selectedLink]);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
