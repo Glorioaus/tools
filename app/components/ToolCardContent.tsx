@@ -21,7 +21,7 @@ const ToolCardContent: React.FC<ToolCardContentProps> = ({
   const handleClick = () => {
     onLinkClick({
       title,
-      icon: <></>, // 这里可以传递实际的图标，如果需要
+      icon: Icon, // 这里可以传递实际的图标，如果需要
       href: url,
       tag: '' // 这里可以根据需要传递 tag
     })

@@ -8,7 +8,7 @@ try {
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'export',
-  distDir: 'dist',
+  distDir: 'distDir',
   eslint: {
     ignoreDuringBuilds: true
   },
@@ -27,7 +27,8 @@ const nextConfig = {
     BACKEND_URL: process.env.NODE_ENV === 'development'
       ? 'http://10.199.0.221:5000'
       : 'http://10.199.0.2232:5000'
-  }
+  },
+  trailingSlash: true // 添加 trailingSlash 配置
 }
 
 function mergeConfig (nextConfig, userConfig) {

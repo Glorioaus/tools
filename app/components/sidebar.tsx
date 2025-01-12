@@ -14,6 +14,9 @@ import {
   Type,
   Menu
 } from 'lucide-react'
+import { observer } from 'mobx-react-lite'
+import toolStore from '../store'
+import { useRouter } from 'next/navigation' // 导入 useRouter
 
 export interface LinkItem {
   title: string
@@ -21,15 +24,17 @@ export interface LinkItem {
   href: string
   tag?: string
 }
-interface SidebarProps {
-  onLinkClick: (link: LinkItem) => void
-}
-export function Sidebar({ onLinkClick }: SidebarProps) {
-  const [activeLink, setActiveLink] = useState('')
+
+const Sidebar = observer(({ onLinkClick }: { onLinkClick: (link: LinkItem) => void }) => {
+  const [activeLink, setActiveLink] = useState('全部') // 默认激活“全部”
+  const router = useRouter() // 初始化 useRouter
 
   const handleLinkClick = (link: LinkItem) => {
     setActiveLink(link.title)
-    onLinkClick(link)
+    toolStore.setSelectedToolTitle(link.title)
+    toolStore.setSelectedToolTag(link.tag || 'all') // 设置 selectedToolTag
+    onLinkClick(link) // 调用传递的 onLinkClick 函数
+    // router.push('/') // 路由跳转到 '/'
   }
 
   const links = [
@@ -113,4 +118,6 @@ export function Sidebar({ onLinkClick }: SidebarProps) {
       </nav>
     </div>
   )
-}
+})
+
+export { Sidebar }
