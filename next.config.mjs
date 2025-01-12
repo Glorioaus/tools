@@ -8,7 +8,7 @@ try {
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'export',
-  distDir: 'distDir',
+  distDir: 'dist',
   eslint: {
     ignoreDuringBuilds: true
   },
@@ -24,9 +24,10 @@ const nextConfig = {
     parallelServerCompiles: true
   },
   env: {
-    BACKEND_URL: process.env.NODE_ENV === 'development'
-      ? 'http://10.199.0.221:5000'
-      : 'http://10.199.0.2232:5000'
+    BACKEND_URL:
+      process.env.NODE_ENV === 'development'
+        ? 'http://10.199.0.221:5000'
+        : 'http://10.199.0.2232:5000'
   },
   trailingSlash: true // 添加 trailingSlash 配置
 }
