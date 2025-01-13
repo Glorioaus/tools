@@ -2,7 +2,7 @@ let userConfig = undefined
 try {
   userConfig = await import('./v0-user-next.config')
 } catch (e) {
-  // ignore error
+  console.error('Error importing user config', e)
 }
 
 /** @type {import('next').NextConfig} */
@@ -23,13 +23,21 @@ const nextConfig = {
     parallelServerBuildTraces: true,
     parallelServerCompiles: true
   },
-  env: {
-    BACKEND_URL:
-      process.env.NODE_ENV === 'development'
-        ? 'http://10.199.0.221:5000'
-        : 'http://10.199.0.2232:5000'
+  async rewrites () {
+    if (process.env.NODE_ENV === 'development') {
+      return [
+        {
+          source: '/dev/:path*', // 匹配前端发起的API请求路径
+          destination: `${process.env.NEXT_PUBLIC_BACKEND_URL}/:path*` // 代理所有其他请求
+        }
+      ]
+    }
+    return []
   },
-  trailingSlash: true // 添加 trailingSlash 配置
+  env: {
+    NEXT_PUBLIC_BASE_API: process.env.API_URL
+  },
+  trailingSlash: false
 }
 
 function mergeConfig (nextConfig, userConfig) {
