@@ -19,7 +19,8 @@ interface Tool {
   tag: string
   title: string
   description: string
-  url: string
+  url: string,
+  isShow: boolean
 }
 
 interface ToolsGridProps {
@@ -33,91 +34,104 @@ export const tools: Tool[] = [
     tag: 'image',
     title: 'CPK计算',
     description: '上传文件计算CPK',
-    url: '/CPK'
+    url: '/CPK',
+    isShow: true
   },
   {
     icon: 'Stamp.webp',
     tag: 'video',
     title: 'Video Watermark',
     description: 'Add custom watermarks to your videos with adjustable settings',
-    url: 'ComingSoon'
+    url: 'ComingSoon',
+    isShow: false,
   },
   {
     icon: 'Monitor.webp',
     tag: 'video',
     title: 'Screen Recording',
     description: 'Record your screen with audio and webcam support',
-    url: 'ComingSoon'
+    url: 'ComingSoon',
+    isShow: false,
   },
   {
     icon: 'FileVideo.webp',
     tag: 'video',
     title: 'Video Format Conversion',
     description: 'Convert videos to MP4, AVI, MOV, and other formats',
-    url: 'ComingSoon'
+    url: 'ComingSoon',
+    isShow: false,
   },
   {
     icon: 'Scissors.webp',
     tag: 'audio',
     title: 'Audio Cutting',
     description: 'Cut and trim audio files with precision controls',
-    url: 'ComingSoon'
+    url: 'ComingSoon',
+    isShow: false,
   },
   {
     icon: 'FileAudio.webp',
     tag: 'audio',
     title: 'Audio Text Conversion',
     description: 'Convert audio to text with support for multiple languages',
-    url: 'ComingSoon'
+    url: 'ComingSoon',
+    isShow: false
   },
   {
     icon: 'Music.webp',
     tag: 'audio',
     title: 'Audio Format Conversion',
     description: 'Convert between MP3, WAV, OGG, and other audio formats',
-    url: 'ComingSoon'
+    url: 'ComingSoon',
+    isShow: false
   },
   {
     icon: 'ImageIcon.webp',
     tag: 'image',
     title: 'Image Resizing',
     description: 'Resize images while maintaining aspect ratio',
-    url: 'ComingSoon'
+    url: 'ComingSoon',
+    isShow: false
   },
   {
     icon: 'Images.webp',
     tag: 'image',
     title: 'Image Editing',
     description: 'Edit images with filters, effects, and adjustments',
-    url: 'ComingSoon'
+    url: 'ComingSoon',
+    isShow: false
   },
   {
     icon: 'ImagePlus.webp',
     tag: 'image',
     title: 'Image Stitching',
     description: 'Combine multiple images into a single panorama',
-    url: 'ComingSoon'
+    url: 'ComingSoon',
+    isShow: false
   },
   {
     icon: 'FileMerge.webp',
     tag: 'document',
     title: 'PDF Merge',
     description: 'Combine multiple PDF files into a single document',
-    url: 'ComingSoon'
+    url: 'ComingSoon',
+    isShow: false
   },
   {
     icon: 'FileText.webp',
     tag: 'document',
     title: 'PDF to Text',
     description: 'Extract text content from PDF documents',
-    url: 'ComingSoon'
+    url: 'ComingSoon',
+    isShow: false
   },
   {
     icon: 'FileWord.webp',
     tag: 'document',
     title: 'PDF to Word',
     description: 'Convert PDF documents to editable Word format',
-    url: 'ComingSoon'
+    url: 'ComingSoon',
+    isShow: false
   }
 ]
 
@@ -126,10 +140,11 @@ const ToolsGrid = observer(({ selectedLink, onLinkClick }: ToolsGridProps) => {
   const router = useRouter() // 初始化 useRouter
 
   useEffect(() => {
+    const nowTools = tools.filter((tool) => tool.isShow)
     if (toolStore.selectedToolTag === 'all') {
-      setFilteredTools(tools); // 默认显示所有工具
+      setFilteredTools(nowTools); // 默认显示所有工具
     } else {
-      setFilteredTools(tools.filter((tool) => tool.tag === toolStore.selectedToolTag));
+      setFilteredTools(nowTools.filter((tool) => tool.tag === toolStore.selectedToolTag)); // 根据 selectedToolTag 过滤工具
     }
   }, [toolStore.selectedToolTag]);
 
