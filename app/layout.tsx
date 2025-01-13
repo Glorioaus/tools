@@ -9,13 +9,14 @@ import toolStore from './store'
 const RootLayout = observer(({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname()
 
-  useEffect(() => {
-    const link = links.find(l => l.href === pathname)
-    if (link) {
-      toolStore.setSelectedToolTitle(link.title)
-      toolStore.setSelectedToolTag(link.tag || 'all') // 设置 selectedToolTag
-    }
-  }, [pathname])
+  // useEffect(() => {
+  //   const link = links.find(l => l.href === pathname)
+  //   debugger
+  //   if (link) {
+  //     toolStore.setSelectedToolTitle(link.title)
+  //     toolStore.setSelectedToolTag(link.tag || 'all') // 设置 selectedToolTag
+  //   }
+  // }, [pathname])
 
   const links: LinkItem[] = [
     { title: '全部', icon: <></>, href: '/', tag: 'all' },

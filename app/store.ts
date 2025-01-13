@@ -1,7 +1,7 @@
 import { makeAutoObservable } from 'mobx'
 
 class ToolStore {
-  selectedToolTitle: string = ''
+  selectedToolTitle: string = '全部'
   selectedToolTag: string = 'all' // 新增属性
 
   constructor() {
