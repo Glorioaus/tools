@@ -14,7 +14,8 @@ const CPK: React.FC = () => {
   const [imageUrl, setImageUrl] = useState<string | null>(null)
   // 保存加载状态
   const [loading, setLoading] = useState(false)
-
+  // 保存图片的 Blob
+  const [imageBlob, setImageBlob] = useState<Blob | null>(null)
   const handleSendFileName = async () => {
     if (!fileName) {
       message.error('请选择一个文件')
@@ -26,8 +27,10 @@ const CPK: React.FC = () => {
       const result = await sendFileName(fileName)
       if (result.success) {
         console.log('文件名称发送成功')
-        const objectUrl = URL.createObjectURL(result.data as Blob)
+        const blob = result.data as Blob
+        const objectUrl = URL.createObjectURL(blob)
         setImageUrl(objectUrl)
+        setImageBlob(blob) // 保存图片的 Blob
         message.success('生成成功')
       } else {
         console.error('文件名称发送失败:', result.error)
@@ -39,6 +42,24 @@ const CPK: React.FC = () => {
     } finally {
       setLoading(false) // 清除加载状态
     }
+  }
+  const handleDownload = () => {
+    if (!imageBlob) {
+      message.error('没有可下载的图片')
+      return
+    }
+
+    // 创建一个隐藏的可下载链接
+    const eleLink = document.createElement('a')
+    eleLink.download = fileName + '.png' // 图片名
+    eleLink.style.display = 'none'
+    // 图片转化成blob并赋值给a标签的href属性
+    eleLink.href = URL.createObjectURL(imageBlob)
+    document.body.appendChild(eleLink)
+    // 模拟点击
+    eleLink.click()
+    // 然后移除
+    document.body.removeChild(eleLink)
   }
 
   const props = {
@@ -121,6 +142,13 @@ const CPK: React.FC = () => {
       {/* "生成"按钮，只有在文件上传成功后才可以使用 */}
       <div className="flex items-center justify-between space-y-2.5">
         <p className="italic md:not-italic">生成文件：{fileName}</p>
+        <Button
+          className='space-y-1.5'
+          onClick={handleDownload}
+          disabled={!imageUrl}
+        >
+          下载
+        </Button>
         <Button
           className='space-y-1.5'
           onClick={handleSendFileName}
