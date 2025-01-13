@@ -1,8 +1,10 @@
+import { createProxyMiddleware } from 'http-proxy-middleware'
+
 let userConfig = undefined
 try {
   userConfig = await import('./v0-user-next.config')
 } catch (e) {
-  // ignore error
+  console.error('Error importing user config', e)
 }
 
 /** @type {import('next').NextConfig} */
@@ -24,12 +26,9 @@ const nextConfig = {
     parallelServerCompiles: true
   },
   env: {
-    BACKEND_URL:
-      process.env.NODE_ENV === 'development'
-        ? 'http://10.199.0.221:5000'
-        : 'http://10.199.0.2232:5000'
+    NEXT_PUBLIC_BASE_API: process.env.API_URL
   },
-  trailingSlash: true // 添加 trailingSlash 配置
+  trailingSlash: false
 }
 
 function mergeConfig (nextConfig, userConfig) {
@@ -55,3 +54,18 @@ function mergeConfig (nextConfig, userConfig) {
 mergeConfig(nextConfig, userConfig)
 
 export default nextConfig
+
+export const config = {
+  async serverMiddleware () {
+    if (process.env.NODE_ENV === 'development') {
+      return [
+        createProxyMiddleware('', {
+          target: process.env.API_URL,
+          changeOrigin: true,
+          pathRewrite: { '^': '' }
+        })
+      ]
+    }
+    return []
+  }
+}

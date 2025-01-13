@@ -1,11 +1,11 @@
 import { useState } from 'react'
-
+const apiUrl = process.env.NEXT_PUBLIC_BASE_API
 export const uploadFile = async (file: File) => {
   const formData = new FormData()
   formData.append('file', file)
-
+  console.log('apiUrl:', apiUrl)
   try {
-    const response = await fetch('/cpkapi/upload_cpk_xlsx', {
+    const response = await fetch(`${apiUrl}/cpkapi/upload_cpk_xlsx`, {
       method: 'POST',
       body: formData
     })
@@ -26,7 +26,7 @@ export const uploadFile = async (file: File) => {
 
 export const sendFileName = async (fileName: string) => {
   try {
-    const response = await fetch('/cpkapi/cpk', {
+    const response = await fetch(`${apiUrl}/cpkapi/cpk`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
