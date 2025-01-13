@@ -1,5 +1,6 @@
 'use client'
 
+import withAuth from './components/withAuth'; // 确保导入正确的 withAuth
 import { ToolsGrid } from './components/tools-grid'; // 确保命名导入
 import { useState } from 'react'
 import dynamic from 'next/dynamic'
@@ -18,7 +19,7 @@ const defaultLink: LinkItem = {
   tag: 'all'
 }
 
-export default function Page() {
+export default withAuth(function Page() {
   const [selectedLink, setSelectedLink] = useState<LinkItem | null>(defaultLink)
   const router = useRouter() // 初始化 useRouter
 
@@ -35,4 +36,4 @@ export default function Page() {
       {/* 添加其他工具组件 */}
     </div>
   )
-}
+});
