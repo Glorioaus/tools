@@ -1,11 +1,4 @@
-import { createProxyMiddleware } from 'http-proxy-middleware'
-
-let userConfig = undefined
-try {
-  userConfig = await import('./v0-user-next.config')
-} catch (e) {
-  console.error('Error importing user config', e)
-}
+// let userConfig = undefined
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -42,41 +35,26 @@ const nextConfig = {
   trailingSlash: false
 }
 
-function mergeConfig (nextConfig, userConfig) {
-  if (!userConfig) {
-    return
-  }
+// function mergeConfig (nextConfig, userConfig) {
+//   if (!userConfig) {
+//     return
+//   }
 
-  for (const key in userConfig) {
-    if (
-      typeof nextConfig[key] === 'object' &&
-      !Array.isArray(nextConfig[key])
-    ) {
-      nextConfig[key] = {
-        ...nextConfig[key],
-        ...userConfig[key]
-      }
-    } else {
-      nextConfig[key] = userConfig[key]
-    }
-  }
-}
+//   for (const key in userConfig) {
+//     if (
+//       typeof nextConfig[key] === 'object' &&
+// !Array.isArray(nextConfig[key])
+//     ) {
+//       nextConfig[key] = {
+//         ...nextConfig[key],
+//         ...userConfig[key]
+//       }
+//     } else {
+//       nextConfig[key] = userConfig[key]
+//     }
+//   }
+// }
 
-mergeConfig(nextConfig, userConfig)
+// mergeConfig(nextConfig, userConfig)
 
 export default nextConfig
-
-export const config = {
-  async serverMiddleware () {
-    if (process.env.NODE_ENV === 'development') {
-      return [
-        createProxyMiddleware('', {
-          target: process.env.API_URL,
-          changeOrigin: true,
-          pathRewrite: { '^': '' }
-        })
-      ]
-    }
-    return []
-  }
-}
