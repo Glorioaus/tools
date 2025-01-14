@@ -19,7 +19,7 @@ const defaultLink: LinkItem = {
   tag: 'all'
 }
 
-export default withAuth(function Page() {
+export default function Page() {
   const [selectedLink, setSelectedLink] = useState<LinkItem | null>(defaultLink)
   const router = useRouter() // 初始化 useRouter
 
@@ -36,4 +36,4 @@ export default withAuth(function Page() {
       {/* 添加其他工具组件 */}
     </div>
   )
-});
+};
